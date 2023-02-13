@@ -3,6 +3,14 @@
 ## Introduction
 
 ## Get To Know the Data
+`Activity` can take one of the following values: 
+  + `STANDING`, 
+  + `SITTING`, 
+  + `LAYING`, 
+  + `WALKING`, 
+  + `WALKING_DOWNSTAIRS`,
+  + `WALKING_UPSTAIRS`
+
 ### Training Set
 
 ### Test Set
