@@ -46,17 +46,13 @@ plt.legend()
 train['subject'].sort_values().unique() 
 test['subject'].sort_values().unique() 
 
-# both['subject'] = '#' + both['subject'].astype(str)
 
 uniq_subjects = both["subject"].sort_values().unique()
 
 #%%
-rows_per_subject = {}
-t = []
+rows_per_subject = []
 for d in both.groupby('subject'):
-    rows_per_subject[d[0]] = d[1].shape[0]
-    t.append([d[0], d[1].shape[0]])    
+    rows_per_subject.append([d[0], d[1].shape[0]])    
 
-rows_per_subject 
-t
-pd.DataFrame(t)
+rows_per_subject = pd.DataFrame(rows_per_subject, columns = ['subject', 'num_of_rows']).set_index('subject')
+rows_per_subject
