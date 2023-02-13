@@ -6,7 +6,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import os
 
-root_path = "/home/damoon/Dropbox/programming/python/projects/1_activity_recognition/"
+root_path = input("Enter the working directory's path:\n")
 os.chdir(root_path)
 #%% Load the data
 train = pd.read_csv(root_path + "data/train-1.csv")
@@ -36,24 +36,11 @@ plt.bar(x=xtick_loc + .2, height=test["Activity"].value_counts(),  width = bar_w
 plt.title("Distribution of 'Activity'")
 plt.xticks(ticks = xtick_loc, labels = both["Activity"].value_counts().index, rotation = 45, 
            size = 7,
-           ha = 'right', rotation_mode='anchor')
+           ha = 'right', rotation_mode='anchor') # ha='right' is not enough to visually align labels with ticks.
+                                                 # For rotation=45, use both ha='right' and rotation_mode='anchor'
+                                                 # For other angles, use a ScaledTranslation() instead
+
 plt.legend()
-#%%
-ax[1].bar(x=train["Activity"].value_counts().index, height=train["Activity"].value_counts(), label='Train')
-ax[1].set_title("Training Set")
-
-ax[2].bar(x=test["Activity"].value_counts().index, height=test["Activity"].value_counts(), label='Test')
-ax[2].set_title("Test Set")
-ax[2].set_xticklabels(rotation = 45, labels = train["Activity"].value_counts().index)
-#%%
-x_location = [_+1 for _ in range(len(both["Activity"].unique()))]
-plt.bar(x=x_location - .2, height=both["Activity"].value_counts(), label='Both')
-plt.bar(x=x_location, height=train["Activity"].value_counts(), label='Train')
-plt.bar(x=x_location + .2, height=test["Activity"].value_counts(), label='Test')
-both["Activity"].value_counts().index
-
-X_axis = 
-X_axis + 1
 #%%    
 # 2. Values of 'subject' in the training and test sets 
 train['subject'].sort_values().unique() 
