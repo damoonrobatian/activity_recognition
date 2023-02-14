@@ -1,6 +1,6 @@
 # Human Activity Recognition using Smart Wearable Data
 
-> Note: *This is a project in progress and will be completed gradually. This README.md file was prepared using the information provided in the original [README.txt](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones#) file. The main purpose of creating the present file is to provide a reader-friendlier document.* 
+> Note: <br> *This is a project in progress and will be completed gradually. This README.md file was prepared using the information provided in the original [README.txt](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones#) file. The main purpose of creating the present file is to provide a reader-friendlier document.* 
 
   
 ## Introduction
