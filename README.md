@@ -1,5 +1,5 @@
 # Human Activity Recognition using Smart Wearable Data
-
+Note: This is a project in progress and will be completed gradually.
 ## Introduction
 
 ## Get To Know the Data
