@@ -4,13 +4,13 @@
 
   
 ## Introduction
-The pool of prticipants of the experiment contains 30 volunteers within an age range of 19 to 48 years old. Each person was assigned an ID number between 1 and 30 and performed six *Activities of Daily Living (ADL)*, while wearing a smartphone (Samsung Galaxy S II) on the waist. The activities performed were `STANDING`, `SITTING`, `LAYING`, `WALKING`, `WALKING_DOWNSTAIRS`, `WALKING_UPSTAIRS`. Using the phone's embedded accelerometer and gyroscope, 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz were recorded. The data were labeled manually and divided into two parts randomly, i.e., the train and test sets. The training set contains 70% of the participants (21 subjects). The test set includes the remaining 30% of the volunteers (9 subjects). A list of participant IDs in each set is provided below:
+The pool of prticipants of the experiment contains 30 volunteers within an age range of 19 to 48 years old. Each person was assigned an ID number between 1 and 30 and performed six *Activities of Daily Living (ADL)*, while wearing a smartphone (Samsung Galaxy S II) on the waist. The activities performed were `STANDING`, `SITTING`, `LAYING`, `WALKING`, `WALKING_DOWNSTAIRS`, `WALKING_UPSTAIRS`. Using the phone's embedded accelerometer and gyroscope, 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz were recorded. The data were labeled manually and divided into two parts randomly, i.e., the train and test sets. The training set contains 70% of the participants (21 subjects). The test set includes the remaining 30% of the volunteers (9 subjects). A list of participant IDs in each set is provided below. The corresponding feature in the datasets is `subject`:
 
 
-| Set    | Participant ID                                                                    |
-| ------ |-----------------------------------------------------------------------------------| 
+| Set    | Participant ID (`subject`)                                                          |
+| ------ |-------------------------------------------------------------------------------------| 
 | Train  | $1,  3,  5,  6,  7,  8, 11, 14, 15, 16, 17, 19, 21, 22, 23, 25, 26, 27, 28, 29, 30$ |
-| Test   | 2,  4,  9, 10, 12, 13, 18, 20, 24                                                 |  
+| Test   | $2,  4,  9, 10, 12, 13, 18, 20, 24$                                                 |  
 
 
  experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
