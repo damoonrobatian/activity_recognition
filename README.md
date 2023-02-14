@@ -12,21 +12,15 @@ The pool of prticipants of the experiment contains 30 volunteers within an age r
 | Train  | $1,  3,  5,  6,  7,  8, 11, 14, 15, 16, 17, 19, 21, 22, 23, 25, 26, 27, 28, 29, 30$ |
 | Test   | $2,  4,  9, 10, 12, 13, 18, 20, 24$                                                 |  
 
+The collected data were pre-processed by noise filtering, applied to *overlapped*, *fixed-length* time windows. A vector of features was created for every window. For more details, refer to the original [README.txt](https://github.com/damoonrobatian/activity_recognition/blob/b13a2b7384f49e3754c59bc259ffa73e98f31e14/data/UCI%20HAR%20Dataset/README.txt) and [features_info.txt](https://github.com/damoonrobatian/activity_recognition/blob/b13a2b7384f49e3754c59bc259ffa73e98f31e14/data/UCI%20HAR%20Dataset/README.txt). 
 
- experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
-
-The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. See 'features_info.txt' for more details. 
+The experiments have been video-recorded, a sample of which can be found [here](https://www.youtube.com/watch?v=XOEN9W05_4A). 
+ 
 
 ## Get To Know the Data
-`subject` is an integer in $\[1, 30\]$. That is, the data were collected from $30$ subjects. 
- 
-`Activity` can take one of the following values: 
-  
 ### Training Set
-`subject` values are 1,  3,  5,  6,  7,  8, 11, 14, 15, 16, 17, 19, 21, 22, 23, 25, 26, 27, 28, 29, 30
 
 ### Test Set
-`subject` values are 2,  4,  9, 10, 12, 13, 18, 20, 24
 
 ## Exploratory Data Analysis
 
