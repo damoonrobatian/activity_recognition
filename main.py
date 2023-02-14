@@ -16,7 +16,7 @@ train.shape
 test.shape
 # Are the variables the same?
 (train.columns == test.columns).sum() # yes
-
+#%%
 ## Compare the values of variables in the training and test sets
 
 # 1. Are the values of 'Activity' are the same in the training and test?
@@ -26,6 +26,15 @@ train["Activity"].unique() == test["Activity"].unique()  # yes
 train['Data'] = 'Train'
 test['Data'] = 'Test'
 both = pd.concat([train, test], axis=0).reset_index(drop=True)
+#%%
+both.describe()
+both.info()
+both.nunique()    # number of unique values of each variable
+both.dtypes
+both.dtypes.unique()
+#%% Missingness in data must be explored:
+both.isna().sum().sum()    # 0 na but another symbol could have been used as na
+both.mode()
 #%%
 xtick_loc = np.arange(len(both["Activity"].unique()))
 bar_width = .2
@@ -72,9 +81,20 @@ rows_per_subject.min()
 rows_per_subject.max()
 rows_per_subject.mean()
 rows_per_subject.sort_values('num_of_rows')
+#%% Should check if the distribution among different values of 'Activity' are balanced
+
+#%% 
+
+
+
 #%%
-
-
+'''
+First Model: Random Forest
+--------------------------
+'''
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV
+from sklearn.metrics import classification_report, confusion_matrix, f1_score, roc_auc_score, accuracy_score
 
 
 
