@@ -28,7 +28,7 @@
 ## Conclusion
 
 
-## Reference
-[Kaggle](https://www.kaggle.com/datasets/uciml/human-activity-recognition-with-smartphones?select=train.csv)
-[UCI ML Repository](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
-[Video](https://www.youtube.com/watch?v=XOEN9W05_4A)
+## References
+  + [Kaggle](https://www.kaggle.com/datasets/uciml/human-activity-recognition-with-smartphones?select=train.csv)
+  + [UCI ML Repository](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
+  + [Video](https://www.youtube.com/watch?v=XOEN9W05_4A)
