@@ -34,7 +34,9 @@ both.dtypes
 both.dtypes.unique()
 #%% Missingness in data must be explored:
 both.isna().sum().sum()    # 0 na but another symbol could have been used as na
-both.mode()
+both.isnull().sum().sum()
+both.mode(numeric_only=True)
+both.values
 #%%
 xtick_loc = np.arange(len(both["Activity"].unique()))
 bar_width = .2
@@ -80,14 +82,10 @@ plt.legend(handles, labels)
 rows_per_subject.min()
 rows_per_subject.max()
 rows_per_subject.mean()
-rows_per_subject.sort_values('num_of_rows')
 #%% Should check if the distribution among different values of 'Activity' are balanced
 
 #%% 
 
-
-
-#%%
 '''
 First Model: Random Forest
 --------------------------
@@ -95,12 +93,66 @@ First Model: Random Forest
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV
 from sklearn.metrics import classification_report, confusion_matrix, f1_score, roc_auc_score, accuracy_score
+#%%
+both_factorized = both.copy()
+both_factorized['Activity'] = both_factorized['Activity'].factorize()[0]
 
+X_train = both_factorized[both_factorized['Data'] == 'Train'].drop(columns=['subject', 'Activity', 'Data'])
+y_train = both_factorized[both_factorized['Data'] == 'Train']['Activity']
 
+X_test = both_factorized[both_factorized['Data'] == 'Test'].drop(columns=['subject', 'Activity', 'Data'])
+y_test = both_factorized[both_factorized['Data'] == 'Test']['Activity']
+#%%
 
+rfc = RandomForestClassifier() 
+# The following gives the default set of RF tuning parameters.
+rfc.get_params()
 
+# Below, we create a grid of RF tuning parameters.
+n_estimators = [100, 500, 1000]
+# max_features = ['log2', 'sqrt']   # sqrt is the default
+max_depth = [int(x) for x in np.linspace(10, 20, num = 3)]
+max_depth.append(None)  # None is the default value
+min_samples_split = [2, 5, 10]
+min_samples_leaf = [2, 4, 8]
+# bootstrap = [True, False]
 
+param_grid = {'n_estimators': n_estimators,
+              # 'max_features': max_features,
+              'max_depth': max_depth,
+              'min_samples_split': min_samples_split,
+              'min_samples_leaf': min_samples_leaf}
+              # 'bootstrap': bootstrap}
 
+param_grid
+#%%
+# scoring = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score)}
+scoring = ["accuracy_score", "f1"]
+#%%
+rfc_random = RandomizedSearchCV(estimator = rfc,
+                                param_distributions = param_grid, 
+                                n_iter = 3, # how many combinations to choose from the grid
+                                cv = 3, 
+                                scoring = ["accuracy", "f1_macro"],
+                                refit = "accuracy",
+                                verbose=2, 
+                                n_jobs = -1)
+#%%
+# Fit the model
+rfc_random.fit(X_train, y_train)
+# Get the all params (not really useful)
+rfc_random.get_params()
+# Get the best params
+rfc_random.best_params_
+# Get the model with the best parameters (this can be used for test-performance or prediction)
+rfc_final = rfc_random.best_estimator_
+
+y_test_pred = rfc_final.predict(X_test)
+# Now, evaluate the performance using the metric you want
+f1_score(y_test, y_test_pred)
+accuracy_score(y_test, y_test_pred)
+print(classification_report(y_test, y_test_pred))
+print(confusion_matrix(y_test, y_test_pred))
 
 
 
