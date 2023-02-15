@@ -37,7 +37,7 @@ both.isna().sum().sum()    # 0 na but another symbol could have been used as na
 both.isnull().sum().sum()
 both.mode(numeric_only=True)
 both.values
-#%%
+#%% Should check if the distribution among different values of 'Activity' are balanced
 xtick_loc = np.arange(len(both["Activity"].unique()))
 bar_width = .2
 
@@ -68,8 +68,10 @@ rows_per_subject = pd.DataFrame(rows_per_subject, columns = ['subject', 'num_of_
 rows_per_subject_sorted = rows_per_subject.sort_values('num_of_rows')
 rows_per_subject_sorted
 #%% For some reason values are not sorted in the plot!!!
+# plt.style.use("seaborn")
+plt.style.use('ggplot')
 colors1 = ['red' if i == 'Test' else 'blue' for i in rows_per_subject_sorted['label']] 
-labels = ['Train', 'Test']
+labels = ['Belonging to Train Set', 'Belonging to Test Set']
 handles = [plt.Rectangle((0,0), 1, 1, color='blue'),
            plt.Rectangle((0,0), 1, 1, color='red')]
 
@@ -82,10 +84,7 @@ plt.legend(handles, labels)
 rows_per_subject.min()
 rows_per_subject.max()
 rows_per_subject.mean()
-#%% Should check if the distribution among different values of 'Activity' are balanced
-
 #%% 
-
 '''
 First Model: Random Forest
 --------------------------
