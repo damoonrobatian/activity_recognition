@@ -7,6 +7,7 @@ warnings.filterwarnings("ignore")
 import os
 
 root_path = input("Enter the working directory's path:\n")
+#%%
 os.chdir(root_path)
 #%% Load the data
 train = pd.read_csv(root_path + "data/train-1.csv")
@@ -126,35 +127,86 @@ param_grid = {'n_estimators': n_estimators,
 param_grid
 #%%
 # scoring = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score)}
-scoring = ["accuracy_score", "f1"]
-#%%
+scoring = ["accuracy", "f1_macro"]
+#%% Set the CV seach
+n_iter_ = 3
 rfc_random = RandomizedSearchCV(estimator = rfc,
                                 param_distributions = param_grid, 
-                                n_iter = 3, # how many combinations to choose from the grid
+                                n_iter = n_iter_, # how many combinations to choose from the grid
                                 cv = 3, 
-                                scoring = ["accuracy", "f1_macro"],
-                                refit = "accuracy",
+                                scoring = scoring,
+                                refit = "accuracy", # has to be set for refitting the model over entire training set
                                 verbose=2, 
+                                error_score=np.NaN, # makes the procedure robust to fit failure (see "Robustness to  Failure"
+                                                    # on https://scikit-learn.org/stable/modules/grid_search.html#multimetric-grid-search)
+                                return_train_score=True,
                                 n_jobs = -1)
-#%%
-# Fit the model
+#%% Fit the model
 rfc_random.fit(X_train, y_train)
-# Get the all params (not really useful)
-rfc_random.get_params()
-# Get the best params
-rfc_random.best_params_
-# Get the model with the best parameters (this can be used for test-performance or prediction)
-rfc_final = rfc_random.best_estimator_
+#%% Search results
+'''
+The following is the list of possible outputs to create. However, some of them might be not very useful.
 
+    rfc_random.get_params()     ---> Get the all params (not really useful)
+    rfc_random.best_index_      ---> Index of the best set of params (not useful)
+    rfc_random.best_score_      ---> Mean test cross-validated score (the one in 'refit') of the best_estimator 
+    rfc_random.best_params_     ---> Best set of the params based on mean test score used for refit
+    rfc_random.best_estimator_  ---> Best model after refitting on the entire train data (?) This is the final model to be tested
+                                     on the test set.
+    
+And finally, the most useful output:
+    rfc_random.cv_results_      ---> Dictionary of all CV results, which can be directly imported to a dataframe (very useful)
+'''
+cv_results = pd.DataFrame(rfc_random.cv_results_)
+# Some informative columns of the cv_results
+col_to_show = ['params', 'mean_train_accuracy', 'std_train_accuracy', 'mean_test_accuracy', 'std_test_accuracy',
+                         'mean_train_f1_macro', 'std_train_f1_macro', 'mean_test_f1_macro', 'std_test_f1_macro']
+to_show = cv_results[col_to_show]
+#%% Get the model with the best parameters (this can be used for test-performance or prediction)
+rfc_final = rfc_random.best_estimator_
 y_test_pred = rfc_final.predict(X_test)
-# Now, evaluate the performance using the metric you want
-f1_score(y_test, y_test_pred)
+#%% Now, evaluate the performance using the metric you want
+f1_score(y_test, y_test_pred, average = 'micro')
 accuracy_score(y_test, y_test_pred)
 print(classification_report(y_test, y_test_pred))
 print(confusion_matrix(y_test, y_test_pred))
+#%% Visualization
+fig, ax = plt.subplots(2, sharex = True, sharey = True)
+ax[0].plot(np.arange(n_iter_), 'mean_train_accuracy', data = to_show, marker = '.', linestyle = '--', color = 'b', linewidth = .5, label = 'Train')
+ax[0].plot(np.arange(n_iter_), 'mean_test_accuracy', data = to_show, marker = '*', linestyle = '-.', color = 'r', linewidth = .5, label = 'Test')
+ax[0].set_title("Accuracy")
 
+ax[1].plot(np.arange(n_iter_), 'mean_train_f1_macro', data = to_show, marker = '.', linestyle = '--', color = 'b', linewidth = .5, label = 'Train')
+ax[1].plot(np.arange(n_iter_), 'mean_test_f1_macro', data = to_show, marker = '.', linestyle = '--', color = 'r', linewidth = .5, label = 'Train')
+ax[1].set_title("F1_macro")
+ax[1].set_xlabel("Parameters")
+ax[1].set_xticklabels(np.arange(n_iter_), labels = np.arange(n_iter_))
+#%%
+def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_param_2):
+    # Get Test Scores Mean and std for each grid search
+    scores_mean = cv_results['mean_test_accuracy']
+    print(len(grid_param_2))
+    print(len(grid_param_1))
+    return scores_mean
+    scores_mean = np.array(scores_mean).reshape(len(grid_param_2),len(grid_param_1))
 
+    scores_sd = cv_results['std_test_accuracy']
+    return scores_sd
+    # scores_sd = np.array(scores_sd).reshape(len(grid_param_2),len(grid_param_1))
+    scores_sd = np.array(scores_sd).reshape(-1,len(grid_param_1))
+    # Plot Grid search scores
+    _, ax = plt.subplots(1,1)
 
+    # Param1 is the X-axis, Param 2 is represented as a different curve (color line)
+    for idx, val in enumerate(grid_param_2):
+        ax.plot(grid_param_1, scores_mean[idx,:], '-o', label= name_param_2 + ': ' + str(val))
 
-
+    ax.set_title("Grid Search Scores", fontsize=20, fontweight='bold')
+    ax.set_xlabel(name_param_1, fontsize=16)
+    ax.set_ylabel('CV Average Score', fontsize=16)
+    ax.legend(loc="best", fontsize=15)
+    ax.grid('on')
+#%%
+# Calling Method 
+plot_grid_search(results, n_estimators, max_depth, 'N Estimators', 'Max Features')
 
