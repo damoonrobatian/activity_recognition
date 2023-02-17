@@ -5,9 +5,9 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore")
 import os
-
+#%% Provide the path to working directory
 root_path = input("Enter the working directory's path:\n")
-#%%
+#%% Set the working directory
 os.chdir(root_path)
 #%% Load the data
 train = pd.read_csv(root_path + "data/train-1.csv")
@@ -113,8 +113,8 @@ n_estimators = [100, 500, 1000]
 # max_features = ['log2', 'sqrt']   # sqrt is the default
 max_depth = [int(x) for x in np.linspace(10, 20, num = 3)]
 max_depth.append(None)  # None is the default value
-min_samples_split = [2, 5, 10]
-min_samples_leaf = [2, 4, 8]
+min_samples_split = [2, 5, 10, 15]
+min_samples_leaf = [5, 10]
 # bootstrap = [True, False]
 
 param_grid = {'n_estimators': n_estimators,
@@ -129,7 +129,7 @@ param_grid
 # scoring = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score)}
 scoring = ["accuracy", "f1_macro"]
 #%% Set the CV seach
-n_iter_ = 3
+n_iter_ = 5
 rfc_random = RandomizedSearchCV(estimator = rfc,
                                 param_distributions = param_grid, 
                                 n_iter = n_iter_, # how many combinations to choose from the grid
@@ -147,7 +147,12 @@ rfc_random.fit(X_train, y_train)
 '''
 The following is the list of possible outputs to create. However, some of them might be not very useful.
 
-    rfc_random.get_params()     ---> Get the all params (not really useful)
+  Before fitting
+  --------------
+    rfc_random.get_params()     ---> Get the all params (not really useful). Can be called before fitting the model
+
+  After fitting
+  -------------
     rfc_random.best_index_      ---> Index of the best set of params (not useful)
     rfc_random.best_score_      ---> Mean test cross-validated score (the one in 'refit') of the best_estimator 
     rfc_random.best_params_     ---> Best set of the params based on mean test score used for refit
@@ -177,10 +182,12 @@ ax[0].plot(np.arange(n_iter_), 'mean_test_accuracy', data = to_show, marker = '*
 ax[0].set_title("Accuracy")
 
 ax[1].plot(np.arange(n_iter_), 'mean_train_f1_macro', data = to_show, marker = '.', linestyle = '--', color = 'b', linewidth = .5, label = 'Train')
-ax[1].plot(np.arange(n_iter_), 'mean_test_f1_macro', data = to_show, marker = '.', linestyle = '--', color = 'r', linewidth = .5, label = 'Train')
+ax[1].plot(np.arange(n_iter_), 'mean_test_f1_macro', data = to_show, marker = '*', linestyle = '--', color = 'r', linewidth = .5, label = 'Test')
 ax[1].set_title("F1_macro")
 ax[1].set_xlabel("Parameters")
-ax[1].set_xticklabels(np.arange(n_iter_), labels = np.arange(n_iter_))
+# ax[1].set_xticklabels(np.arange(n_iter_), labels = np.arange(n_iter_))
+plt.xticks(ticks = np.arange(n_iter_), labels = np.arange(n_iter_) + 1)
+plt.legend()
 #%%
 def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_param_2):
     # Get Test Scores Mean and std for each grid search
@@ -209,4 +216,14 @@ def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_
 #%%
 # Calling Method 
 plot_grid_search(results, n_estimators, max_depth, 'N Estimators', 'Max Features')
+
+GridSearch_table_plot(rfc_random, "n_estimators", negative=False)
+
+
+
+
+
+
+
+
 
