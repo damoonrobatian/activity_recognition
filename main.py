@@ -87,6 +87,10 @@ plt.legend(handles, labels)
 sns.set(font_scale=.6)
 sns.barplot(data = rows_per_subject_sorted, x = 'subject', y = "num_of_rows", hue='label')
 # sns.barplot(data = rows_per_subject_sorted, x = "num_of_rows", y='subject', hue='label')
+#%% Distribution of Activity levels
+plt.title('No of Datapoints per Activity', fontsize=15)
+sns.countplot(data = both, x = "Activity")
+plt.xticks(rotation=90)
 #%%
 rows_per_subject.min()
 rows_per_subject.max()
