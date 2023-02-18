@@ -1,3 +1,5 @@
+# These functions were found online and should be tailored later!!!
+
 import numpy  as np
 import pandas as pd
 
