@@ -53,7 +53,10 @@ plt.xticks(ticks = xtick_loc, labels = both["Activity"].value_counts().index, ro
                                                  # For other angles, use a ScaledTranslation() instead
 
 plt.legend()
-#%%    
+#%% Activity distribution for each subject
+# sns.set(font_scale = .8)   # for some reason breaks the color
+sns.countplot(y='subject',hue='Activity', data = both)
+#%%
 # 2. Values of 'subject' in the training and test sets 
 train_subjects = train['subject'].sort_values().unique() 
 test_subjects = test['subject'].sort_values().unique() 
@@ -80,7 +83,10 @@ plt.bar(x='subject', height = 'num_of_rows', data = rows_per_subject_sorted, col
 plt.title("Total Number of the Rows for Every Subject")
 plt.xticks(ticks = np.arange(30), labels = rows_per_subject_sorted['subject'], size = 7)
 plt.legend(handles, labels)
-
+#%% Alternative visualization
+sns.set(font_scale=.6)
+sns.barplot(data = rows_per_subject_sorted, x = 'subject', y = "num_of_rows", hue='label')
+# sns.barplot(data = rows_per_subject_sorted, x = "num_of_rows", y='subject', hue='label')
 #%%
 rows_per_subject.min()
 rows_per_subject.max()
