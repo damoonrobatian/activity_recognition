@@ -109,12 +109,12 @@ rfc = RandomForestClassifier()
 rfc.get_params()
 
 # Below, we create a grid of RF tuning parameters.
-n_estimators = [100, 500, 1000]
+n_estimators = [100, 500, 1000, 1200, 1500]
 # max_features = ['log2', 'sqrt']   # sqrt is the default
-max_depth = [int(x) for x in np.linspace(10, 20, num = 3)]
+max_depth = [int(x) for x in np.linspace(5, 20, num = 3)]
 max_depth.append(None)  # None is the default value
-min_samples_split = [2, 5, 10, 15]
-min_samples_leaf = [5, 10]
+min_samples_split = [10, 15, 30]
+min_samples_leaf = [10, 20, 30]
 # bootstrap = [True, False]
 
 param_grid = {'n_estimators': n_estimators,
@@ -127,13 +127,13 @@ param_grid = {'n_estimators': n_estimators,
 param_grid
 #%%
 # scoring = {"AUC": "roc_auc", "Accuracy": make_scorer(accuracy_score)}
-scoring = ["accuracy", "f1_macro"]
+scoring = ["accuracy", "f1_macro", "f1_micro"]
 #%% Set the CV seach
-n_iter_ = 5
+n_iter_ = 20
 rfc_random = RandomizedSearchCV(estimator = rfc,
                                 param_distributions = param_grid, 
                                 n_iter = n_iter_, # how many combinations to choose from the grid
-                                cv = 3, 
+                                cv = 5, 
                                 scoring = scoring,
                                 refit = "accuracy", # has to be set for refitting the model over entire training set
                                 verbose=2, 
@@ -189,35 +189,6 @@ ax[1].set_xlabel("Parameters")
 plt.xticks(ticks = np.arange(n_iter_), labels = np.arange(n_iter_) + 1)
 plt.legend()
 #%%
-def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_param_2):
-    # Get Test Scores Mean and std for each grid search
-    scores_mean = cv_results['mean_test_accuracy']
-    print(len(grid_param_2))
-    print(len(grid_param_1))
-    return scores_mean
-    scores_mean = np.array(scores_mean).reshape(len(grid_param_2),len(grid_param_1))
-
-    scores_sd = cv_results['std_test_accuracy']
-    return scores_sd
-    # scores_sd = np.array(scores_sd).reshape(len(grid_param_2),len(grid_param_1))
-    scores_sd = np.array(scores_sd).reshape(-1,len(grid_param_1))
-    # Plot Grid search scores
-    _, ax = plt.subplots(1,1)
-
-    # Param1 is the X-axis, Param 2 is represented as a different curve (color line)
-    for idx, val in enumerate(grid_param_2):
-        ax.plot(grid_param_1, scores_mean[idx,:], '-o', label= name_param_2 + ': ' + str(val))
-
-    ax.set_title("Grid Search Scores", fontsize=20, fontweight='bold')
-    ax.set_xlabel(name_param_1, fontsize=16)
-    ax.set_ylabel('CV Average Score', fontsize=16)
-    ax.legend(loc="best", fontsize=15)
-    ax.grid('on')
-#%%
-# Calling Method 
-plot_grid_search(results, n_estimators, max_depth, 'N Estimators', 'Max Features')
-
-GridSearch_table_plot(rfc_random, "n_estimators", negative=False)
 
 
 
