@@ -95,6 +95,16 @@ plt.xticks(rotation=90)
 rows_per_subject.min()
 rows_per_subject.max()
 rows_per_subject.mean()
+#%%
+sns.set_palette("Set1", desat=0.80)
+facetgrid = sns.FacetGrid(train, hue='Activity', aspect=2)
+facetgrid.map(sns.distplot,'tBodyAccMag-mean()', hist=False).add_legend()
+
+plt.annotate("Stationary Activities", xy=(-0.956,12), xytext=(-0.8, 16), size=10, va='center', ha='left',
+             arrowprops=dict(arrowstyle="simple",connectionstyle="arc3,rad=0.1"))
+
+plt.annotate("Moving Activities", xy=(0,3), xytext=(0.2, 9), size=10, va='center', ha='left',
+             arrowprops=dict(arrowstyle="simple",connectionstyle="arc3,rad=0.1"))
 #%% 
 '''
 First Model: Random Forest
