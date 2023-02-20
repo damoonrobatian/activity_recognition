@@ -96,19 +96,36 @@ rows_per_subject.min()
 rows_per_subject.max()
 rows_per_subject.mean()
 #%%
-features_to_plot = ["tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()",
-                    "tBodyGyroMag-mean()", "tBodyGyroJerkMag-mean()", "fBodyAccMag-mean()"]
-
 sns.set_palette("Set1", desat=0.80)
-facetgrid = sns.FacetGrid(train, hue='Activity', aspect=2)
+facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
 facetgrid.map(sns.distplot,'tBodyAccMag-mean()', hist=False).add_legend()
 
 plt.annotate("Stationary Activities", xy=(-0.956,12), xytext=(-0.8, 16), size=10, va='center', ha='left',
              arrowprops=dict(arrowstyle="simple",connectionstyle="arc3,rad=0.1"))
 
 plt.annotate("Moving Activities", xy=(0,3), xytext=(0.2, 9), size=10, va='center', ha='left',
-             arrowprops=dict(arrowstyle="simple",connectionstyle="arc3,rad=0.1"))
+             arrowprops=dict(arrowstyle="simple", connectionstyle="arc3,rad=0.1"))
 #%% 
+features_to_plot = ["tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()",
+                    "tBodyGyroMag-mean()", "tBodyGyroJerkMag-mean()", "fBodyAccMag-mean()"]
+
+sns.set_palette("Set1", desat=0.80)
+facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
+# facetgrid.map(sns.distplot, features_to_plot[0], hist=False).add_legend()
+# facetgrid.map(sns.distplot, features_to_plot[1], hist=False).add_legend()
+facetgrid.map(sns.distplot, features_to_plot[2], hist=False).add_legend()
+#%%
+fig, ax = plt.subplots(3,2, sharex=True, sharey=True)
+# ax[0]
+#%%
+for feature in features_to_plot:
+    both[feature].plot.density(color = "orange")
+
+#%%
+both[features_to_plot[1]].plot.density(color = "green")
+both[features_to_plot[2]].plot.density(color = "red")
+
+#%%
 import plotly.express as px
 
 df = px.data.iris()
