@@ -115,30 +115,42 @@ facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
 # facetgrid.map(sns.distplot, features_to_plot[1], hist=False).add_legend()
 facetgrid.map(sns.distplot, features_to_plot[2], hist=False).add_legend()
 #%%
-fig, ax = plt.subplots(3,2, sharex=True, sharey=True)
+# fig, ax = plt.subplots(3,2, sharex=True, sharey=True)
+# i, j = 0, 0
+# ax[0,0].plot(both[features_to_plot[0]])
 # ax[0]
-#%% Checking the densities of some variables
-for feature in features_to_plot:
-    both[feature].plot.density()
-plt.title("PDF of 6 Features")
+# #%% Checking the densities of some variables
+# for feature in features_to_plot:
+#     both[feature].plot.density()
+# plt.title("PDF of 6 Features")
 # There is apparetnly a pattern of bi-modality in each of the variables.
-#%%
-both[features_to_plot[1]].plot.density(color = "green")
-both[features_to_plot[2]].plot.density(color = "red")
+
+fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 10))
+
+# loop through the variables and plot the density plot in each subplot
+for i, var in enumerate(features_to_plot):
+    row = i // 2; print(row)
+    col = i % 2; print(col)
+    sns.kdeplot(both[var], ax=axes[row, col], shade=True)
+    axes[row, col].set_title(var)
+
+# adjust the spacing between subplots
+plt.tight_layout()
+
 
 #%%
-import plotly.express as px
+# import plotly.express as px
 
-df = px.data.iris()
-features = ["sepal_width", "sepal_length", "petal_width", "petal_length"]
+# df = px.data.iris()
+# features = ["sepal_width", "sepal_length", "petal_width", "petal_length"]
 
-fig = px.scatter_matrix(
-    df,
-    dimensions=features,
-    color="species"
-)
-fig.update_traces(diagonal_visible=False)
-fig.show()
+# fig = px.scatter_matrix(
+#     df,
+#     dimensions=features,
+#     color="species"
+# )
+# fig.update_traces(diagonal_visible=False)
+# fig.show()
 #%%
 
     
