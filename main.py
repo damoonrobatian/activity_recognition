@@ -12,7 +12,7 @@ os.chdir(root_path)
 #%% Load the data
 train = pd.read_csv(root_path + "data/train-1.csv")
 test = pd.read_csv(root_path + "data/test.csv")
-#%% Get to know the data
+#%% Get to know the data 
 train.shape
 test.shape
 # Are the variables the same?
@@ -38,7 +38,16 @@ both.isna().sum().sum()    # 0 na but another symbol could have been used as na
 both.isnull().sum().sum()
 both.mode(numeric_only=True)
 both.values
-#%% Should check if the distribution among different values of 'Activity' are balanced
+#%% 
+'''
+Exploratory Data Analysis (EDA)
+-------------------------------
+In the current section, we try to understand the data better. EDA can significantly improve the quality of model selection in later
+steps. We focus on the distribution of variables provided in the dataset and visualize the results for an easier inference. Since
+analyzing all variables might not be practical using additional information provided outside of the dataset will help detect variables
+with more value. 
+'''
+# Should check if the distribution among different values of 'Activity' are balanced
 xtick_loc = np.arange(len(both["Activity"].unique()))
 bar_width = .2
 
