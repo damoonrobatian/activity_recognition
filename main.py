@@ -117,10 +117,11 @@ facetgrid.map(sns.distplot, features_to_plot[2], hist=False).add_legend()
 #%%
 fig, ax = plt.subplots(3,2, sharex=True, sharey=True)
 # ax[0]
-#%%
+#%% Checking the densities of some variables
 for feature in features_to_plot:
-    both[feature].plot.density(color = "orange")
-
+    both[feature].plot.density()
+plt.title("PDF of 6 Features")
+# There is apparetnly a pattern of bi-modality in each of the variables.
 #%%
 both[features_to_plot[1]].plot.density(color = "green")
 both[features_to_plot[2]].plot.density(color = "red")
