@@ -56,11 +56,11 @@ plt.legend()
 #%% Activity distribution for each subject (Not very useful)
 # sns.set(font_scale = .8)   # for some reason breaks the color
 sns.countplot(y='subject',hue='Activity', data = both)
-#%%
+#%% 
 # 2. Values of 'subject' in the training and test sets 
 train_subjects = train['subject'].sort_values().unique() 
 test_subjects = test['subject'].sort_values().unique() 
-#%%
+#%% Number of the rows per subject
 rows_per_subject = []
 for subject, sub_df in both.groupby('subject'):
     if subject in train_subjects:
@@ -71,7 +71,7 @@ for subject, sub_df in both.groupby('subject'):
 rows_per_subject = pd.DataFrame(rows_per_subject, columns = ['subject', 'num_of_rows', 'label'])
 rows_per_subject_sorted = rows_per_subject.sort_values('num_of_rows')
 rows_per_subject_sorted
-#%%
+#%% Visualize number of the rows per subject
 # plt.style.use("seaborn")
 plt.style.use('ggplot')
 colors1 = ['red' if i == 'Test' else 'blue' for i in rows_per_subject_sorted['label']] 
@@ -81,13 +81,16 @@ handles = [plt.Rectangle((0,0), 1, 1, color='blue'),
 
 plt.bar(x='subject', height = 'num_of_rows', data = rows_per_subject_sorted, color = colors1)
 plt.title("Total Number of the Rows for Every Subject")
+plt.xlabel("Subject")
+plt.ylabel("Number of Rows")
 plt.xticks(ticks = np.arange(30), labels = rows_per_subject_sorted['subject'], size = 7)
 plt.legend(handles, labels)
-#%% Alternative visualization
+#%% Alternative visualization for rows per subject
 sns.set(font_scale=.6)   # Affects all font sizes. Title should be resized manually
 ax = sns.barplot(data = rows_per_subject_sorted, x = 'subject', y = "num_of_rows", hue='label', dodge=False)  # dodge=False adjusts the bars' width and distance
 ax.set_title("Total Number of the Rows for Every Subject", fontsize = 12)
-#%% Distribution of Activity levels
+ax.set_ylabel("Number of Rows")
+#%% Distribution of Activity levels (This is number of the rows per activity value in entire data.)
 plt.title('Number of Datapoints per Activity', fontsize=12)
 sns.countplot(data = both, x = "Activity")
 plt.xticks(rotation=90)
