@@ -45,7 +45,7 @@ bar_width = .2
 plt.bar(x=xtick_loc - .2, height=both["Activity"].value_counts(), width = bar_width, label='Both')
 plt.bar(x=xtick_loc , height=train["Activity"].value_counts(),  width = bar_width, label='Train')
 plt.bar(x=xtick_loc + .2, height=test["Activity"].value_counts(),  width = bar_width, label='Test')
-plt.title("Distribution of 'Activity'")
+plt.title("Distribution of Activity Values", fontsize = 12)
 plt.xticks(ticks = xtick_loc, labels = both["Activity"].value_counts().index, rotation = 45, 
            size = 7,
            ha = 'right', rotation_mode='anchor') # ha='right' is not enough to visually align labels with ticks.
@@ -53,7 +53,7 @@ plt.xticks(ticks = xtick_loc, labels = both["Activity"].value_counts().index, ro
                                                  # For other angles, use a ScaledTranslation() instead
 
 plt.legend()
-#%% Activity distribution for each subject
+#%% Activity distribution for each subject (Not very useful)
 # sns.set(font_scale = .8)   # for some reason breaks the color
 sns.countplot(y='subject',hue='Activity', data = both)
 #%%
@@ -71,7 +71,7 @@ for subject, sub_df in both.groupby('subject'):
 rows_per_subject = pd.DataFrame(rows_per_subject, columns = ['subject', 'num_of_rows', 'label'])
 rows_per_subject_sorted = rows_per_subject.sort_values('num_of_rows')
 rows_per_subject_sorted
-#%% For some reason values are not sorted in the plot!!!
+#%%
 # plt.style.use("seaborn")
 plt.style.use('ggplot')
 colors1 = ['red' if i == 'Test' else 'blue' for i in rows_per_subject_sorted['label']] 
@@ -84,17 +84,36 @@ plt.title("Total Number of the Rows for Every Subject")
 plt.xticks(ticks = np.arange(30), labels = rows_per_subject_sorted['subject'], size = 7)
 plt.legend(handles, labels)
 #%% Alternative visualization
-sns.set(font_scale=.6)
-sns.barplot(data = rows_per_subject_sorted, x = 'subject', y = "num_of_rows", hue='label')
-# sns.barplot(data = rows_per_subject_sorted, x = "num_of_rows", y='subject', hue='label')
+sns.set(font_scale=.6)   # Affects all font sizes. Title should be resized manually
+ax = sns.barplot(data = rows_per_subject_sorted, x = 'subject', y = "num_of_rows", hue='label', dodge=False)  # dodge=False adjusts the bars' width and distance
+ax.set_title("Total Number of the Rows for Every Subject", fontsize = 12)
 #%% Distribution of Activity levels
-plt.title('No of Datapoints per Activity', fontsize=15)
+plt.title('Number of Datapoints per Activity', fontsize=12)
 sns.countplot(data = both, x = "Activity")
 plt.xticks(rotation=90)
 #%%
 rows_per_subject.min()
 rows_per_subject.max()
-rows_per_subject.mean()
+round(rows_per_subject.mean(), 1)
+#%%
+features_to_plot = ["tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()",
+                    "tBodyGyroMag-mean()", "tBodyGyroJerkMag-mean()", "fBodyAccMag-mean()"]
+
+colors = ['blue', 'red', 'green', 'purple', 'orange', 'brown']
+fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 10))
+
+# loop through the variables and plot the density plot in each subplot
+for i, var in enumerate(features_to_plot):
+    row = i // 2; print("row: ", row)
+    col = i % 2; print("col: ", col)
+    sns.kdeplot(both[var], ax=axes[row, col], color = colors[i], fill=True)     # fill and shade seem to do the same thing
+    axes[row, col].set_title(var)
+
+# adjust the spacing between subplots
+plt.tight_layout()
+# There is apparetnly a pattern of bi-modality in each of the variables.
+
+
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
@@ -106,38 +125,12 @@ plt.annotate("Stationary Activities", xy=(-0.956,12), xytext=(-0.8, 16), size=10
 plt.annotate("Moving Activities", xy=(0,3), xytext=(0.2, 9), size=10, va='center', ha='left',
              arrowprops=dict(arrowstyle="simple", connectionstyle="arc3,rad=0.1"))
 #%% 
-features_to_plot = ["tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()",
-                    "tBodyGyroMag-mean()", "tBodyGyroJerkMag-mean()", "fBodyAccMag-mean()"]
 
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
 # facetgrid.map(sns.distplot, features_to_plot[0], hist=False).add_legend()
 # facetgrid.map(sns.distplot, features_to_plot[1], hist=False).add_legend()
 facetgrid.map(sns.distplot, features_to_plot[2], hist=False).add_legend()
-#%%
-# fig, ax = plt.subplots(3,2, sharex=True, sharey=True)
-# i, j = 0, 0
-# ax[0,0].plot(both[features_to_plot[0]])
-# ax[0]
-# #%% Checking the densities of some variables
-# for feature in features_to_plot:
-#     both[feature].plot.density()
-# plt.title("PDF of 6 Features")
-# There is apparetnly a pattern of bi-modality in each of the variables.
-
-fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 10))
-
-# loop through the variables and plot the density plot in each subplot
-for i, var in enumerate(features_to_plot):
-    row = i // 2; print(row)
-    col = i % 2; print(col)
-    sns.kdeplot(both[var], ax=axes[row, col], shade=True)
-    axes[row, col].set_title(var)
-
-# adjust the spacing between subplots
-plt.tight_layout()
-
-
 #%%
 # import plotly.express as px
 
