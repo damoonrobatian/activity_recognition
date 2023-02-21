@@ -109,25 +109,44 @@ ax.set_title("Total Number of the Rows for Every Subject", fontsize = 12)
 ax.set_ylabel("Number of Rows")
 #%% Summary of rows per subject
 rows_per_subject.describe().astype(int)
-#%%
-features_to_plot = ["tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()",
+#%% Let's focus on the following 6 columns (These columns were chosen based on the information provided in features_info.txt file.)
+features_of_interest1 = ["tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()",
                     "tBodyGyroMag-mean()", "tBodyGyroJerkMag-mean()", "fBodyAccMag-mean()"]
 
-colors = ['blue', 'red', 'green', 'purple', 'orange', 'brown']
-fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 10))
+colors1 = ['blue', 'red', 'green', 'purple', 'orange', 'brown']
+fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 10), sharex=True, sharey=True)
 
 # loop through the variables and plot the density plot in each subplot
-for i, var in enumerate(features_to_plot):
-    row = i // 2; print("row: ", row)
-    col = i % 2; print("col: ", col)
-    sns.kdeplot(both[var], ax=axes[row, col], color = colors[i], fill=True)     # fill and shade seem to do the same thing
+for i, var in enumerate(features_of_interest1):
+    row = i // 2   # floor
+    col = i % 2
+    sns.kdeplot(both[var], ax=axes[row, col], color = colors1[i], fill=True)     # fill and shade seem to do the same thing
     axes[row, col].set_title(var)
 
 # adjust the spacing between subplots
 plt.tight_layout()
-# There is apparetnly a pattern of bi-modality in each of the variables.
+'''
+There is apparetnly a pattern of bi-modality in each of the variables. An interesting task would be to inverstigate
+if there is any relation between this bi-modal pattern and the activity being performed. Before that, let's check 
+how correlated these features are with each other.
+'''
+#%% Similarity of the features_of_interest1 quartiles
+df_of_interest1 = both[features_of_interest1].describe().round(2)
+# min and max are the same for all variables of interest, so remove them for visualization
+idx_of_interest1 = set(df_of_interest1.index).difference(['min', 'max', 'count'])
 
-
+plt.xticks(rotation = 45, ha = 'right', rotation_mode = 'anchor')
+for row in idx_of_interest1:
+    data = df_of_interest1.loc[row]
+    sns.lineplot(data=data, marker = 'o', linestyle = '--', linewidth = .6 ,label = row)
+plt.ylabel("")
+plt.title("Quartiles and Standard Deviation of Features of Interest", fontsize = 12)
+#%% Correlation (features_of_interest1)
+sns.pairplot(data = both[features_of_interest1]) # Seems that 'tBodyAccMag-mean()' and 'tGravityAccMag-mean()' are equal!!!
+#%% Are 'tBodyAccMag-mean()' and 'tGravityAccMag-mean()' the same? 
+(both['tBodyAccMag-mean()'] == both['tGravityAccMag-mean()']).sum()
+(train['tBodyAccMag-mean()'] == train['tGravityAccMag-mean()']).sum()
+train.shape
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
@@ -142,9 +161,9 @@ plt.annotate("Moving Activities", xy=(0,3), xytext=(0.2, 9), size=10, va='center
 
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
-# facetgrid.map(sns.distplot, features_to_plot[0], hist=False).add_legend()
-# facetgrid.map(sns.distplot, features_to_plot[1], hist=False).add_legend()
-facetgrid.map(sns.distplot, features_to_plot[2], hist=False).add_legend()
+# facetgrid.map(sns.distplot, features_of_interest1[0], hist=False).add_legend()
+# facetgrid.map(sns.distplot, features_of_interest1[1], hist=False).add_legend()
+facetgrid.map(sns.distplot, features_of_interest1[2], hist=False).add_legend()
 #%%
 # import plotly.express as px
 
