@@ -148,9 +148,30 @@ both['tBodyAccMag-mean()'].equals(both['tGravityAccMag-mean()'])   # Yes, they a
 '''
 What if there are other duplicate columns?
 ------------------------------------------
-This will be checked below.
+This will be checked below. We will use the pd.DataFrame.duplicated() method, applied to the columns.
 '''
- 
+both.T.duplicated().sum() # 21 columns are duplicates of other columns!
+#%%
+def detect_duplicate_columns(df):
+    output = {}
+    
+    for col_idx, col_name in enumerate(df.columns):
+        first_col = df[col_name]
+        duplicates = [] # list of cols that are first_col's duplicates
+        
+        for second_col_name in df.columns[col_idx + 1 :]: 
+            if first_col.equals(df[second_col_name]):
+                duplicates.append(second_col_name)
+                
+        if len(duplicates) > 0:
+            output[col_name] = duplicates
+            df = df.drop(columns=duplicates)
+    return output
+
+detect_duplicate_columns(both)
+#%%
+
+
 
 #%%
 sns.set_palette("Set1", desat=0.80)
