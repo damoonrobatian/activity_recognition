@@ -144,9 +144,14 @@ plt.title("Quartiles and Standard Deviation of Features of Interest", fontsize =
 #%% Correlation (features_of_interest1)
 sns.pairplot(data = both[features_of_interest1]) # Seems that 'tBodyAccMag-mean()' and 'tGravityAccMag-mean()' are equal!!!
 #%% Are 'tBodyAccMag-mean()' and 'tGravityAccMag-mean()' the same? 
-(both['tBodyAccMag-mean()'] == both['tGravityAccMag-mean()']).sum()
-(train['tBodyAccMag-mean()'] == train['tGravityAccMag-mean()']).sum()
-train.shape
+both['tBodyAccMag-mean()'].equals(both['tGravityAccMag-mean()'])   # Yes, they are the same
+'''
+What if there are other duplicate columns?
+------------------------------------------
+This will be checked below.
+'''
+ 
+
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
