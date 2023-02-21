@@ -47,7 +47,14 @@ steps. We focus on the distribution of variables provided in the dataset and vis
 analyzing all variables might not be practical using additional information provided outside of the dataset will help detect variables
 with more value. 
 '''
-# Should check if the distribution among different values of 'Activity' are balanced
+#%% Distribution of Activity levels (This is number of the rows per activity value in entire data.)
+plt.title('Number of Datapoints per Activity', fontsize=12)
+sns.countplot(data = both, x = "Activity")
+plt.xticks(rotation=45, fontsize = 7, 
+           ha = 'right', rotation_mode = 'anchor') # ha='right' is not enough to visually align labels with ticks.
+                                                   # For rotation=45, use both ha='right' and rotation_mode='anchor'
+                                                   # For other angles, use a ScaledTranslation() instead
+#%% Should check if the distribution among different values of 'Activity' are balanced
 xtick_loc = np.arange(len(both["Activity"].unique()))
 bar_width = .2
 
@@ -64,6 +71,7 @@ plt.xticks(ticks = xtick_loc, labels = both["Activity"].value_counts().index, ro
 plt.legend()
 #%% Activity distribution for each subject (Not very useful)
 # sns.set(font_scale = .8)   # for some reason breaks the color
+plt.figure(figsize=(15,30))
 sns.countplot(y='subject',hue='Activity', data = both)
 #%% 
 # 2. Values of 'subject' in the training and test sets 
@@ -99,10 +107,6 @@ sns.set(font_scale=.6)   # Affects all font sizes. Title should be resized manua
 ax = sns.barplot(data = rows_per_subject_sorted, x = 'subject', y = "num_of_rows", hue='label', dodge=False)  # dodge=False adjusts the bars' width and distance
 ax.set_title("Total Number of the Rows for Every Subject", fontsize = 12)
 ax.set_ylabel("Number of Rows")
-#%% Distribution of Activity levels (This is number of the rows per activity value in entire data.)
-plt.title('Number of Datapoints per Activity', fontsize=12)
-sns.countplot(data = both, x = "Activity")
-plt.xticks(rotation=90)
 #%%
 rows_per_subject.min()
 rows_per_subject.max()
