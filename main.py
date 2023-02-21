@@ -107,10 +107,8 @@ sns.set(font_scale=.6)   # Affects all font sizes. Title should be resized manua
 ax = sns.barplot(data = rows_per_subject_sorted, x = 'subject', y = "num_of_rows", hue='label', dodge=False)  # dodge=False adjusts the bars' width and distance
 ax.set_title("Total Number of the Rows for Every Subject", fontsize = 12)
 ax.set_ylabel("Number of Rows")
-#%%
-rows_per_subject.min()
-rows_per_subject.max()
-round(rows_per_subject.mean(), 1)
+#%% Summary of rows per subject
+rows_per_subject.describe().astype(int)
 #%%
 features_to_plot = ["tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()",
                     "tBodyGyroMag-mean()", "tBodyGyroJerkMag-mean()", "fBodyAccMag-mean()"]
