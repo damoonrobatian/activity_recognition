@@ -183,10 +183,20 @@ len(duplicate_columns[1])     # yes 21
 #%% All duplicate columns need to be removed (I will store the original df just in case)
 both_without_duplicate_cols = both.drop(columns = duplicate_columns[1]) 
 both_without_duplicate_cols
-#%% Recall features_of_interest1; one of the features was removed
+#%% Recall features_of_interest1; one of the features was removed.  Now, create features_of_interest2 for further exploration.
+features_of_interest2 = []
+
 for col in features_of_interest1:
     print(col, ": ", col in both_without_duplicate_cols.columns.to_list())
-  
+    if col in both_without_duplicate_cols.columns.to_list():
+        features_of_interest2.append(col)
+
+features_of_interest2
+#%% Updated correlation (features_of_interest2)
+sns.pairplot(data = both_without_duplicate_cols[features_of_interest2]) 
+#%% Each of the features_of_interest2 per activity
+
+
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
