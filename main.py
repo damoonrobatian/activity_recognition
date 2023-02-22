@@ -195,8 +195,16 @@ features_of_interest2
 #%% Updated correlation (features_of_interest2)
 sns.pairplot(data = both_without_duplicate_cols[features_of_interest2]) 
 #%% Each of the features_of_interest2 per activity
+fig, ax = plt.subplots(nrows=len(features_of_interest2), ncols = both_without_duplicate_cols['Activity'].nunique(), figsize=(10, 12))
 
+# iterate through columns and plot densities for each group
+for i, column in enumerate(features_of_interest2):
+    for j, activity in enumerate(both_without_duplicate_cols['Activity'].unique()):
+        sns.kdeplot(data = both_without_duplicate_cols[both_without_duplicate_cols['Activity'] == activity], x=column, ax=ax[i, j])
+        ax[i, j].set_title(column + ' for ' + activity)
 
+# adjust the spacing between subplots
+plt.tight_layout()
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
