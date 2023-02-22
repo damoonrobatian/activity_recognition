@@ -155,24 +155,32 @@ both.T.duplicated().sum() # 21 columns are duplicates of other columns!
 def detect_duplicate_columns(df):
     output = {}
     
-    for col_idx, col_name in enumerate(df.columns):
-        first_col = df[col_name]
-        duplicates = [] # list of cols that are first_col's duplicates
+    while df.shape[1] > 1:
+        first_col_name = df.columns[0]
+        rest_cols = df.columns[1:]
+        duplicates = []
         
-        for second_col_name in df.columns[col_idx + 1 :]: 
-            if first_col.equals(df[second_col_name]):
+        for second_col_name in rest_cols:
+            if df[first_col_name].equals(df[second_col_name]):
                 duplicates.append(second_col_name)
                 
         if len(duplicates) > 0:
-            output[col_name] = duplicates
-            df = df.drop(columns=duplicates)
+            output[first_col_name] = duplicates
+            df = df.drop(columns = duplicates)
+            
+        df = df.drop(columns = first_col_name)
+        
+        # df = df.drop(columns = to_drop)
+        
     return output
 
-detect_duplicate_columns(both)
-#%%
-
-
-
+duplicate_columns = detect_duplicate_columns(both.drop(columns = ['subject', 'Activity', 'Data']))
+#%% Did we find 21 duplicates?
+s = 0
+for value in duplicate_columns.values():
+    s += len(value)
+s     # yes since s=21 
+#%% All duplicate columns need to be removed   
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
