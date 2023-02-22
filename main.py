@@ -206,7 +206,7 @@ for i, column in enumerate(features_of_interest2):
         sns.kdeplot(data = both_without_duplicate_cols[both_without_duplicate_cols['Activity'] == activity], 
                     x=column, ax=ax[i, j], 
                     color = colors1[j], fill = True, label = activity)
-        # ax[i, j].set_title(column + ' for ' + activity)
+        
         ax[i, j].set_ylabel(column, size = 14)
         ax[i, j].set_xlabel(activity, fontsize = 14)
 # adjust the spacing between subplots
