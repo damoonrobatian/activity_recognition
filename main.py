@@ -180,9 +180,13 @@ def detect_duplicate_columns(df):
 duplicate_columns = detect_duplicate_columns(both.drop(columns = ['subject', 'Activity', 'Data']))
 #%% Did we find 21 duplicates?
 len(duplicate_columns[1])     # yes 21 
-#%% All duplicate columns need to be removed
+#%% All duplicate columns need to be removed (I will store the original df just in case)
 both_without_duplicate_cols = both.drop(columns = duplicate_columns[1]) 
-both_without_duplicate_cols  
+both_without_duplicate_cols
+#%% Recall features_of_interest1; one of the features was removed
+for col in features_of_interest1:
+    print(col, ": ", col in both_without_duplicate_cols.columns.to_list())
+  
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
