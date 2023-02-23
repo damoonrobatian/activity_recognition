@@ -239,7 +239,7 @@ variable. To conclude this topic, we can plot a similar thing but for active and
 passiv_activ = [['SITTING', 'STANDING', 'LAYING'], ['WALKING', 'WALKING_UPSTAIRS', 'WALKING_DOWNSTAIRS']]
 
 fig, ax = plt.subplots(nrows=5, ncols = 2, sharex = True, sharey = True, figsize=(10, 14))
-
+fig.suptitle("Density of features_of_interest2 Separated by Passive and Active Categories", fontsize = 14)
 # iterate through columns and plot densities for each group
 for i, column in enumerate(features_of_interest2):
     for j in range(len(passiv_activ)):
