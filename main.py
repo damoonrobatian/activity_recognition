@@ -238,24 +238,24 @@ variable. To conclude this topic, we can plot a similar thing but for active and
 #%%
 passiv_activ = [['SITTING', 'STANDING', 'LAYING'], ['WALKING', 'WALKING_UPSTAIRS', 'WALKING_DOWNSTAIRS']]
 
-fig, ax = plt.subplots(nrows=5, ncols = 2, sharex = True, sharey = True, figsize=(10, 20))
+fig, ax = plt.subplots(nrows=5, ncols = 2, sharex = True, sharey = True, figsize=(10, 14))
 
 # iterate through columns and plot densities for each group
 for i, column in enumerate(features_of_interest2):
     for j in range(len(passiv_activ)):
-        sns.kdeplot(data = both_without_duplicate_cols[both_without_duplicate_cols['Activity'] is in passiv_activ[j]], 
+        sns.kdeplot(data = both_without_duplicate_cols[both_without_duplicate_cols['Activity'].isin(passiv_activ[j])], 
                     x=column, ax=ax[i, j], 
-                    color = colors1[j], fill = True, label = activity)
+                    color = colors1[j], fill = True)
         
-        # ax[i, j].set_ylabel(column, size = 14)
-        # ax[i, j].set_xlabel(activity, fontsize = 14)
+        ax[i, j].set_ylabel(column, size = 12)
+        ax[i, j].set_xlabel(['Passive', 'Active'][j], fontsize = 14)
 # adjust the spacing between subplots
 plt.tight_layout()
 
 
 
 
-both_without_duplicate_cols[both_without_duplicate_cols['Activity'] is in passiv_activ[j]]
+
 
 
 
