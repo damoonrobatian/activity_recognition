@@ -229,6 +229,12 @@ for i, column in enumerate(features_of_interest2):
         ax[i, j].set_xlabel(activity, fontsize = 14)
 # adjust the spacing between subplots
 plt.tight_layout()
+'''
+Apparently, there is a distinction between "passive" and "active" activities in all features_of_interest2. That is, in the 
+passive activities, i.e., standing, sitting, and laying, a sharp peak happens at the beginning of the variables' range, while
+for the active ones, i.e., walking, walking downstairs, and walking upstairs, a blunt peak occurs at larger values of the 
+variable.  
+'''
 #%%
 
 
