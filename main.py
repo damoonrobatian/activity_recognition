@@ -153,6 +153,24 @@ This will be checked below. We will use the pd.DataFrame.duplicated() method, ap
 both.T.duplicated().sum() # 21 columns are duplicates of other columns!
 #%%
 def detect_duplicate_columns(df):
+    '''
+    Parameters
+    ----------
+    df : pandas DataFrame
+        pandas dataframe whose columns must be checked for duplicates
+
+    Returns
+    -------
+    tuple : 
+        A tuple with 2 entries "output" and "cols_to_drop"
+        
+        output: Dictionary
+                A dictionary containing columns (key) and a list of other columns (value) that are identical with the key
+        
+        cols_to_drop: List
+                A list containing all values (columns) of the "output" dictionary, for easy removal
+    '''
+
     output = {}
     # Duplicate cols will be stored for later easy removal
     cols_to_drop = []
