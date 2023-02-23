@@ -218,6 +218,8 @@ fig, ax = plt.subplots(nrows=len(features_of_interest2),
                        sharex = True, sharey = True,
                        figsize=(20, 24))
 
+fig.suptitle("Density of features_of_interest2 Separated by Activities", fontsize = 18)
+
 # iterate through columns and plot densities for each group
 for i, column in enumerate(features_of_interest2):
     for j, activity in enumerate(both_without_duplicate_cols['Activity'].unique()):
@@ -240,6 +242,7 @@ passiv_activ = [['SITTING', 'STANDING', 'LAYING'], ['WALKING', 'WALKING_UPSTAIRS
 
 fig, ax = plt.subplots(nrows=5, ncols = 2, sharex = True, sharey = True, figsize=(10, 14))
 fig.suptitle("Density of features_of_interest2 Separated by Passive and Active Categories", fontsize = 14)
+
 # iterate through columns and plot densities for each group
 for i, column in enumerate(features_of_interest2):
     for j in range(len(passiv_activ)):
@@ -251,17 +254,6 @@ for i, column in enumerate(features_of_interest2):
         ax[i, j].set_xlabel(['Passive', 'Active'][j], fontsize = 14)
 # adjust the spacing between subplots
 plt.tight_layout()
-
-
-
-
-
-
-
-
-
-
-
 #%%
 sns.set_palette("Set1", desat=0.80)
 facetgrid = sns.FacetGrid(both, hue='Activity', aspect=2)
