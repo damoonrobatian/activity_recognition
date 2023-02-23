@@ -233,14 +233,29 @@ plt.tight_layout()
 Apparently, there is a distinction between "passive" and "active" activities in all features_of_interest2. That is, in the 
 passive activities, i.e., standing, sitting, and laying, a sharp peak happens at the beginning of the variables' range, while
 for the active ones, i.e., walking, walking downstairs, and walking upstairs, a blunt peak occurs at larger values of the 
-variable.  
+variable. To conclude this topic, we can plot a similar thing but for active and passive activities as two separate categories. 
 '''
 #%%
+passiv_activ = [['SITTING', 'STANDING', 'LAYING'], ['WALKING', 'WALKING_UPSTAIRS', 'WALKING_DOWNSTAIRS']]
+
+fig, ax = plt.subplots(nrows=5, ncols = 2, sharex = True, sharey = True, figsize=(10, 20))
+
+# iterate through columns and plot densities for each group
+for i, column in enumerate(features_of_interest2):
+    for j in range(len(passiv_activ)):
+        sns.kdeplot(data = both_without_duplicate_cols[both_without_duplicate_cols['Activity'] is in passiv_activ[j]], 
+                    x=column, ax=ax[i, j], 
+                    color = colors1[j], fill = True, label = activity)
+        
+        # ax[i, j].set_ylabel(column, size = 14)
+        # ax[i, j].set_xlabel(activity, fontsize = 14)
+# adjust the spacing between subplots
+plt.tight_layout()
 
 
 
 
-
+both_without_duplicate_cols[both_without_duplicate_cols['Activity'] is in passiv_activ[j]]
 
 
 
